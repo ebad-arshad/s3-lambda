@@ -1,40 +1,44 @@
-# Serverless Image Processing with AWS & Terraform
+# 🚀 Serverless Image Processing Pipeline
 
-This project implements an automated, event-driven pipeline for processing and optimizing images. It leverages AWS Lambda to react to S3 uploads, providing a scalable way to handle image transformations without managing any servers.
+An automated, event driven architecture that processes and optimizes images uploaded to AWS S3 using Lambda and Terraform.
 
-## How it works
+---
 
-The architecture follows a simple, reactive flow:
+## 🏗️ Architecture Overview
 
-1.  **Upload:** When an image is dropped into the source S3 bucket, it triggers an event.
-2.  **Process:** An AWS Lambda function (running Python 3.14) is immediately invoked. It pulls the image, performs the necessary processing—such as resizing or metadata extraction—and then pushes the optimized version to a separate "processed" bucket.
-3.  **Monitor:** All logs and execution details are sent to Amazon CloudWatch, making it easy to track performance and debug issues.
+The system follows a reactive "Pipe and Filter" design pattern:
+1. **Trigger**: An image is uploaded to the **Source S3 Bucket**.
+2. **Compute**: S3 triggers an **AWS Lambda** function.
+3. **Action**: The Lambda function reads the image, performs processing, and uploads the result to a **Processed S3 Bucket**.
+4. **Monitoring**: All execution logs are captured in **Amazon CloudWatch**.
 
-## Tech Stack
 
-*   **Infrastructure:** Terraform
-*   **Compute:** AWS Lambda (Python 3.14 / Boto3)
-*   **Storage:** Amazon S3
-*   **Environment:** Ubuntu (Linux)
 
-## Getting Started
+---
 
-### Prerequisites
+## 🛠️ Tech Stack
 
+* **Infrastructure:** Terraform
+* **Compute:** AWS Lambda
+* **Storage:** Amazon S3
+* **Language:** Python 3.14 (Boto3 SDK)
+* **Platform:** Ubuntu
+
+---
+
+## 🚦 Getting Started
+
+### 1. Prerequisites
 Before you begin, make sure you have the following installed and configured:
-
 *   [Terraform](https://www.terraform.io/downloads.html)
 *   [AWS CLI](https://aws.amazon.com/cli/) (configured with appropriate credentials)
 *   A Linux environment (like Ubuntu) for zipping the Lambda packages to ensure compatibility.
+*   **State Management:** Update the `bucket` name in `terraform.tf` to a unique S3 bucket that you own to store the Terraform state.
 
-### Deployment
-
-To spin up the infrastructure, navigate to the root directory and run:
+### 2. Infrastructure Deployment
+Navigate to the root directory and run:
 
 ```bash
 terraform init
 terraform plan
 terraform apply -auto-approve
-```
-
-Once the apply completes, Terraform will output the names of your source and destination buckets. You can then test the pipeline by uploading an image to the source bucket.
